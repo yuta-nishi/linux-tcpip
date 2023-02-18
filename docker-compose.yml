@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  linux_tcpip:
+    image: ubuntu20.04
+    container_name: linux_tcpip
+    build:
+      context: .
+    network_mode: host
+    privileged: true
+    tty: true
+    volumes:
+      - ./:/workdir
