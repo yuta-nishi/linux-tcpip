@@ -30,6 +30,11 @@ set -Ceuo pipefail
     ip netns exec ns2 ip address add 192.0.2.2/24 dev ns2-veth0
 }
 
+: "set-mac-addr" && {
+    ip netns exec ns1 ip link set dev ns1-veth0 address 00:00:5E:00:53:01
+    ip netns exec ns2 ip link set dev ns2-veth0 address 00:00:5E:00:53:02
+}
+
 : "test" && {
     ip netns exec ns1 ping -c 3 192.0.2.2 -I 192.0.2.1
 }

@@ -43,6 +43,13 @@ set -Ceuo pipefail
     ip netns exec ns2 ip route add default via 198.51.100.254
 }
 
+: "set-mac-addr" && {
+    ip netns exec ns1 ip link set dev ns1-veth0 address 00:00:5E:00:53:11
+    ip netns exec router ip link set dev gw-veth0 address 00:00:5E:00:53:12
+    ip netns exec router ip link set dev gw-veth1 address 00:00:5E:00:53:21
+    ip netns exec ns2 ip link set dev ns2-veth0 address 00:00:5E:00:53:22
+}
+
 : "test" && {
     ip netns exec ns1 ping -c 3 198.51.100.1 -I 192.0.2.1
 }
