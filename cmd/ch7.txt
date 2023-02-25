@@ -1,0 +1,25 @@
+# 7.1
+ip netns exec router iptables -t nat \
+        -A POSTROUTING \
+        -s 192.0.2.0/24 \
+        -o gw-veth1 \
+        -j MASQUERADE
+ip netns exec router iptables -t nat -L
+
+ip netns exec lan tcpdump -tnl -i lan-veth0 icmp
+ip netns exec wan tcpdump -tnl -i wan-veth0 icmp
+
+# 7.2
+ip netns exec router iptables -t nat \
+  -A PREROUTING \
+  -p tcp \
+  --dport 54321 \
+  -d 203.0.113.254 \
+  -j DNAT \
+  --to-destination 192.0.2.1
+ip netns exec router iptables -t nat -L
+
+ip netns exec lan nc -lnv 54321
+ip netns exec wan nc 203.0.113.254 54321
+ip netns exec wan tcpdump -tnl -i wan-veth0 "tcp and port 54321"
+ip netns exec lan tcpdump -tnl -i lan-veth0 "tcp and port 54321"

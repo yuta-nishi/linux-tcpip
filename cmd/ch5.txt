@@ -1,0 +1,9 @@
+# 5.1
+nc -ulnv 127.0.0.1 54321
+nc -u 127.0.0.1 54321
+tcpdump -i lo -tnlA "udp and port 54321"
+
+# 5.2
+nc -lnv 127.0.0.1 54321
+nc 127.0.0.1 54321
+tcpdump -i lo -tnlA "tcp and port 54321"
